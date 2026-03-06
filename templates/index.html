@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog — Home{% endblock %}
+
+{% block content %}
+<h1 class="mb-1">Latest Posts</h1>
+
+{% if posts %}
+{% for post in posts %}
+<div class="card">
+    <h2><a href="{{ url_for('view_post', post_id=post['id']) }}">{{ post['title'] }}</a></h2>
+    <div class="meta">by {{ post['author_name'] }} &middot; {{ post['created_at'] }}</div>
+    <p>{{ post['content'][:200] }}{% if post['content']|length > 200 %}&hellip;{% endif %}</p>
+</div>
+{% endfor %}
+{% else %}
+<div class="card text-center">
+    <p>No posts yet. {% if user %}<a href="{{ url_for('new_post') }}">Write one!</a>{% else %}<a
+            href="{{ url_for('login') }}">Log in</a> to create a post.{% endif %}</p>
+</div>
+{% endif %}
+{% endblock %}

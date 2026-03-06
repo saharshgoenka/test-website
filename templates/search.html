@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<h1 class="mb-1">Search Posts</h1>
+
+<form method="GET" action="{{ url_for('search') }}">
+    <div class="search-bar">
+        <input type="text" name="q" placeholder="Search by title or content…" value="{{ query }}">
+        <button type="submit" class="btn">Search</button>
+    </div>
+</form>
+
+{% if query %}
+<p class="mb-1">Results for "<strong>{{ query }}</strong>":</p>
+
+{% if results %}
+{% for post in results %}
+<div class="card">
+    <h2><a href="{{ url_for('view_post', post_id=post['id']) }}">{{ post['title'] }}</a></h2>
+    <div class="meta">by {{ post['author_name'] }} &middot; {{ post['created_at'] }}</div>
+    <p>{{ post['content'][:200] }}{% if post['content']|length > 200 %}&hellip;{% endif %}</p>
+</div>
+{% endfor %}
+{% else %}
+<div class="card text-center">
+    <p>No posts matched your search.</p>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}
